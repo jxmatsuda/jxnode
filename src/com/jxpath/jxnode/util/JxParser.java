@@ -18,17 +18,14 @@ public class JxParser {
     public static JxNode parse( File aFile ) throws Exception{
         FileInputStream in = null;
         JxNode node = null;
-
+        
+        if( !aFile.exists() || !aFile.isFile() ){
+            throw new Exception( "File( " + aFile.getAbsolutePath() + " ) not found!");
+        }
+        
         try {
             in = new FileInputStream(aFile);
-            JxReader reader = new JxReader();
-            reader.parse(new InputSource(in));
-
-            String error = reader.getError();
-            if (error != null) {
-                throw new Exception(error);
-            }
-            node = reader.getTopNode();
+            node = parse(new InputSource(in));
             
         } finally {
             in.close();
@@ -43,15 +40,7 @@ public class JxParser {
      * @throws Exception
      */
     public static JxNode parse( String aXml ) throws Exception{
-        JxReader reader = new JxReader();
-        reader.parse( new InputSource(new StringReader( aXml )));
-        
-        String error = reader.getError();
-        if( error != null ){
-            throw new Exception( error );
-        }
-        
-        JxNode node = reader.getTopNode();
+        JxNode node = parse( new InputSource(new StringReader( aXml )));
         return node;
     }
 
@@ -64,15 +53,41 @@ public class JxParser {
      * @throws Exception
      */
     public static JxNode parse( InputStream aIn ) throws Exception{
+        JxNode node = parse( new InputSource(aIn));
+        return node;
+    }
+    
+    //------------------------
+    // private
+    //------------------------
+    /**
+     * parse common
+     * @param aSrc
+     * @return JxNode read from aSrc
+     * @throws Exception
+     */
+    private static JxNode parse( InputSource aSrc ) throws Exception{
         JxReader reader = new JxReader();
-        reader.parse( new InputSource(aIn));
+        JxNode   result = null;
         
-        String error = reader.getError();
-        if( error != null ){
-            throw new Exception( error );
+        String   error  = null;
+        try{
+            reader.parse( aSrc );
+            result = reader.getTopNode();
+            error = reader.getError();
+            
+        }catch( Exception e ){
+            error = reader.getError();
+            if( error == null ){
+                error = e.getMessage();
+            }
+            
+        }finally{
+            if( error != null ){
+                throw new Exception( error );
+            }
         }
         
-        JxNode node = reader.getTopNode();
-        return node;
+        return result;
     }
 }

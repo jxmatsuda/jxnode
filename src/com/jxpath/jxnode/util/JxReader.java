@@ -1,17 +1,18 @@
 package com.jxpath.jxnode.util;
 
-import java.io.CharArrayWriter;
 import java.util.Stack;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.XMLReaderAdapter;
 
 import com.jxpath.jxnode.JxNode;
 
-public class JxReader extends XMLReaderAdapter {
+public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorHandler{
 
     //------------------------
     // field vairables
@@ -20,13 +21,14 @@ public class JxReader extends XMLReaderAdapter {
     private JxNode          mCurrentNode = null;
     private Stack<JxNode>   mNodeStack   = null;
     private String          mErrorMsg    = null;
+    private Locator         mLocator     = null;
     
     //------------------------
     // constructor
     //------------------------
     public JxReader() throws SAXException {
         super();
-        this.setErrorHandler( new MyErrorHander() );
+        this.setErrorHandler(this);
     }
 
     //--------------------------------------
@@ -43,9 +45,14 @@ public class JxReader extends XMLReaderAdapter {
         return mTopNode;
     }
     
-    //--------------------------------------
-    // public method( need to implement)
-    //--------------------------------------
+    //-------------------------------------------
+    // methods for Interface of ContentHandler
+    //-------------------------------------------
+    @Override
+    public void setDocumentLocator(Locator aLocator){
+        mLocator = aLocator;
+    }
+    
     /**
      * XML start
      */
@@ -109,25 +116,91 @@ public class JxReader extends XMLReaderAdapter {
         }
     }
 
+    //-------------------------------------------
+    // methods for Interface of ErrorHandler
+    //-------------------------------------------
     @Override
-    public void setErrorHandler(ErrorHandler aArg0) {
+    public void error(SAXParseException aException) throws SAXException {
+        mErrorMsg = createErrorMsg( aException );
+    }
+    @Override
+    public void fatalError(SAXParseException aException) throws SAXException {
+        mErrorMsg = createErrorMsg( aException );
+    }
+    @Override
+    public void warning(SAXParseException aException) throws SAXException {
     }
 
-    //------------------------
-    // inner class
-    //------------------------
-    class MyErrorHander implements ErrorHandler{
-        @Override
-        public void error(SAXParseException aException) throws SAXException {
-            mErrorMsg = aException.getMessage();
+    //-----------------------
+    // private
+    //-----------------------
+    /**
+     * build error message with Line number and Column number
+     * @param aException 
+     * @return error message
+     */
+    private String createErrorMsg( Exception aException){
+        StringBuffer buf = new StringBuffer();
+        
+        if( mLocator != null ){
+            int lineNum = mLocator.getLineNumber();
+            if( lineNum >= 0 ){
+                buf.append( "Line=").append( lineNum );
+            }
+            int colNum = mLocator.getColumnNumber();
+            if( colNum >= 0 ){
+                buf.append( ", Column=").append( colNum ).append(" : "); 
+            }
         }
-        @Override
-        public void fatalError(SAXParseException aException) throws SAXException {
-            mErrorMsg = aException.getMessage();
-        }
-        @Override
-        public void warning(SAXParseException aException) throws SAXException {
-        }
+        
+        buf.append( aException.getMessage() );
+        return buf.toString();
+    }
+
+    //-------------------------------------------
+    // methods for Interface of LexicalHandler
+    //-------------------------------------------
+    @Override
+    public void comment(char[] aCh, int aStart, int aLength)
+            throws SAXException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void endCDATA() throws SAXException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void endDTD() throws SAXException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void endEntity(String aName) throws SAXException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void startCDATA() throws SAXException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void startDTD(String aName, String aPublicId, String aSystemId)
+            throws SAXException {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void startEntity(String aName) throws SAXException {
+        // TODO Auto-generated method stub
         
     }
 }

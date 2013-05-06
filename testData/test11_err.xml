@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test att1="属性1" att2="属性2">
+  <child01>
+    <child001 att001="属性001">テストです<child001> <!-- 閉じタグなし -->
+  </child01>
+</test>
