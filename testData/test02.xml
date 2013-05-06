@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test att1="属性1" att2="属性2">
+  <child01 att01="属性01" att02="属性02" att03="属性03" att04="属性04" att05="属性05"
+           att06="属性06" att07="属性07" att08="属性08" att09="属性09" att10="属性10">テストです</child01>
+</test>
