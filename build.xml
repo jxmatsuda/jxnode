@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jxnode" default="jar">
+  <property name="src" location="src"/>
+  <property name="dest" location="classes"/>
+  <property name="jarname" value="jxnode"/>	
+
+  <target name="jar">
+    <delete dir="${dest}"/>
+    <mkdir dir="${dest}"/>
+    <javac srcdir="${src}" destdir="${dest}" source="1.6" target="1.6">
+    	<!--
+    	<classpath>
+    		<fileset dir="lib"/>
+       </classpath>
+       -->
+    </javac>
+    <jar basedir="${dest}" destfile="${jarname}.jar"/>
+  </target>
+</project>
