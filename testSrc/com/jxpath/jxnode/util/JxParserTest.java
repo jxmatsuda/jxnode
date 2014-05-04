@@ -36,7 +36,7 @@ public class JxParserTest {
         for( int i=1; i<=fileNum; i++ ){
             try{
                 System.out.println("--------- test1" + i + "_err.xml --------\n");
-                JxNode node = JxParser.parse( new File("testData/test1" + i + "_err.xml"));
+                JxParser.parse( new File("testData/test1" + i + "_err.xml"));
                 fail();
                 
             }catch( Exception e){
