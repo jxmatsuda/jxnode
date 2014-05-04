@@ -8,6 +8,6 @@ public interface iJxElement {
     // public methods
     //-----------------------------
     public eElementType getType();
-    public void toWriter(Writer aWriter, int aDepth) throws IOException;
+    public void toWriter(Writer a_writer, int a_depth) throws IOException;
     public String getName();
 }

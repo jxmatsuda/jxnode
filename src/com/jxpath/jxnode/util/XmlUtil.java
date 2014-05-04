@@ -34,31 +34,31 @@ public class XmlUtil {
     /**
      * output to writer
      * @param aOut output writer
-     * @param aText output data
+     * @param a_text output data
      */
-    public static void toWriter(Writer aWriter, String aText)
+    public static void toWriter(Writer a_writer, String a_text)
     throws IOException{
-        char[] chars = aText.toCharArray();
+        char[] chars = a_text.toCharArray();
         for( int i=0; i<chars.length; i++ ){
             char val = chars[i];
             switch(val){
             case '>':
-                aWriter.write( GT );
+                a_writer.write( GT );
                 break;
             case '<':
-                aWriter.write( LT );
+                a_writer.write( LT );
                 break;
             case '\'':
-                aWriter.write( APOS );
+                a_writer.write( APOS );
                 break;
             case '\"':
-                aWriter.write( QUOT );
+                a_writer.write( QUOT );
                 break;
             case '&':
-                aWriter.write( AMP );
+                a_writer.write( AMP );
                 break;
             default:
-                aWriter.write(val);
+                a_writer.write(val);
             }
         }
     }

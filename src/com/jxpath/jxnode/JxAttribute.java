@@ -14,21 +14,21 @@ public class JxAttribute implements iJxElement {
     // field variables
     //-----------------------
     /** attribute name */
-    private String mName = null;
+    private String m_name = null;
     
     /** text value */
-    private String mText = null;
+    private String m_text = null;
         
     //-----------------------
     // constractor
     //-----------------------
     /**
-     * @param aName attribute name
-     * @param aText attribute text
+     * @param a_name attribute name
+     * @param a_text attribute text
      */
-    protected JxAttribute(String aName, String aText){
-        mName = aName.intern();
-        mText = aText.intern();
+    protected JxAttribute(String a_name, String a_text){
+        m_name = a_name.intern();
+        m_text = a_text.intern();
     }
 
     //-----------------------
@@ -39,7 +39,7 @@ public class JxAttribute implements iJxElement {
      * @return attribute name
      */
     public String getName() {
-        return mName;
+        return m_name;
     }
 
     /**
@@ -47,14 +47,14 @@ public class JxAttribute implements iJxElement {
      * @return text value
      */
     protected String getText(){
-        return mText;
+        return m_text;
     }
 
     /**
      * set text
      */
-    protected void setText(String aText){
-        mText = aText.intern();
+    protected void setText(String a_text){
+        m_text = a_text.intern();
     }
     
     /**
@@ -68,17 +68,17 @@ public class JxAttribute implements iJxElement {
 
     /**
      * helper for writer
-     * @param aWriter output writer
-     * @param aDepth don't care
+     * @param a_writer output writer
+     * @param a_depth don't care
      * @throws IOException 
      */
     @Override
-    public void toWriter(Writer aWriter, int aDepth) throws IOException {
-        aWriter.write(mName);
-        aWriter.write("=\"");
-        if( mText != null ){
-            XmlUtil.toWriter(aWriter, mText);
+    public void toWriter(Writer a_writer, int a_depth) throws IOException {
+        a_writer.write(m_name);
+        a_writer.write("=\"");
+        if( m_text != null ){
+            XmlUtil.toWriter(a_writer, m_text);
         }
-        aWriter.append('\"');
+        a_writer.append('\"');
     }
 }

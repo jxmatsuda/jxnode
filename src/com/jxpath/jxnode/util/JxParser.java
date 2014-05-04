@@ -11,20 +11,20 @@ import com.jxpath.jxnode.JxNode;
 public class JxParser {
     /**
      * parse file
-     * @param aFile input file
+     * @param a_file input file
      * @return JxNode from file
      * @throws Exception
      */
-    public static JxNode parse( File aFile ) throws Exception{
+    public static JxNode parse( File a_file ) throws Exception{
         FileInputStream in = null;
         JxNode node = null;
         
-        if( !aFile.exists() || !aFile.isFile() ){
-            throw new Exception( "File( " + aFile.getAbsolutePath() + " ) not found!");
+        if( !a_file.exists() || !a_file.isFile() ){
+            throw new Exception( "File( " + a_file.getAbsolutePath() + " ) not found!");
         }
         
         try {
-            in = new FileInputStream(aFile);
+            in = new FileInputStream(a_file);
             node = parse(new InputSource(in));
             
         } finally {
@@ -39,8 +39,8 @@ public class JxParser {
      * @return JxNode from string
      * @throws Exception
      */
-    public static JxNode parse( String aXml ) throws Exception{
-        JxNode node = parse( new InputSource(new StringReader( aXml )));
+    public static JxNode parse( String a_xml ) throws Exception{
+        JxNode node = parse( new InputSource(new StringReader( a_xml )));
         return node;
     }
 
@@ -52,8 +52,8 @@ public class JxParser {
      * @return JxNode from inputstream
      * @throws Exception
      */
-    public static JxNode parse( InputStream aIn ) throws Exception{
-        JxNode node = parse( new InputSource(aIn));
+    public static JxNode parse( InputStream a_in ) throws Exception{
+        JxNode node = parse( new InputSource(a_in));
         return node;
     }
     
@@ -62,17 +62,17 @@ public class JxParser {
     //------------------------
     /**
      * parse common
-     * @param aSrc
+     * @param a_src
      * @return JxNode read from aSrc
      * @throws Exception
      */
-    private static JxNode parse( InputSource aSrc ) throws Exception{
+    private static JxNode parse( InputSource a_src ) throws Exception{
         JxReader reader = new JxReader();
         JxNode   result = null;
         
         String   error  = null;
         try{
-            reader.parse( aSrc );
+            reader.parse( a_src );
             result = reader.getTopNode();
             error = reader.getError();
             

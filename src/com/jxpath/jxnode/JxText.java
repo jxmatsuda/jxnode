@@ -14,17 +14,17 @@ public class JxText implements iJxElement {
     // field variables
     //-----------------------
     /** text value */
-    private String mText = null;
+    private String m_text = null;
     
     //-----------------------
     // constactor
     //-----------------------
     /**
      * 
-     * @param aText
+     * @param a_text
      */
-    protected JxText(String aText){
-        mText = aText.intern();
+    protected JxText(String a_text){
+        m_text = a_text.intern();
     }
 
     //-----------------------
@@ -42,7 +42,7 @@ public class JxText implements iJxElement {
      * @return text value
      */
     protected String getText(){
-        return mText;
+        return m_text;
     }
     
     /**
@@ -56,13 +56,13 @@ public class JxText implements iJxElement {
 
     /**
      * helper for writer
-     * @param aWriter output writer
-     * @param aDepth indent level(0,1,2...) but ignore hire
+     * @param a_writer output writer
+     * @param a_depth indent level(0,1,2...) but ignore hire
      * @throws IOException 
      */
     @Override
-    public void toWriter(Writer aWriter, int aDepth) throws IOException {
-        XmlUtil.toWriter(aWriter, mText);
+    public void toWriter(Writer a_writer, int a_depth) throws IOException {
+        XmlUtil.toWriter(a_writer, m_text);
     }
     
 }

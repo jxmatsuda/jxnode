@@ -33,16 +33,16 @@ public class JxNode implements iJxElement{
     // field variables
     //-----------------------------
     /** encoding */
-    private String mEncoding = "UTF-8";
+    private String m_encoding = "UTF-8";
     
     /** node name */
-    private String mName;
+    private String m_name;
 
     /** if only text, use only this */
-    private String mText = null;
+    private String m_text = null;
         
     /** child element list */
-    private ArrayList<iJxElement> mChildList = null;
+    private ArrayList<iJxElement> m_childList = null;
 
     //-----------------------------
     // constractors
@@ -56,16 +56,16 @@ public class JxNode implements iJxElement{
     /**
      * node name constractor
      */
-    public JxNode(String aName){
-        mName = aName.intern();
+    public JxNode(String a_name){
+        m_name = a_name.intern();
     }
 
     /**
      * node name and value
      */
-    public JxNode(String aName, String aText){
-        mName = aName.intern();
-        mText = aText.intern();
+    public JxNode(String a_name, String a_text){
+        m_name = a_name.intern();
+        m_text = a_text.intern();
     }
     
     //-----------------------------
@@ -76,7 +76,7 @@ public class JxNode implements iJxElement{
      * @return node name
      */
     public String getName() {
-        return mName;
+        return m_name;
     }
 
     /**
@@ -84,33 +84,33 @@ public class JxNode implements iJxElement{
      * @return node text
      */
     protected String getText() {
-        return mText;
+        return m_text;
     }
     
     /**
      * set text
-     * @param aText
+     * @param a_text
      */
-    public void setText(String aText){
-        mText = aText.intern();
+    public void setText(String a_text){
+        m_text = a_text.intern();
     }
     
     /**
      * set attribute
-     * @param aName
-     * @param aText
+     * @param a_name
+     * @param a_text
      */
-    public void setAtt(String aName, String aText){
+    public void setAtt(String a_name, String a_text){
         synchronized( this ){
-            iJxElement element = getFirstElement( aName, eElementType.ATTRIBUTE);
+            iJxElement element = getFirstElement( a_name, eElementType.ATTRIBUTE);
             if( element != null ){
                 // overwrite att value
                 JxAttribute att = (JxAttribute)element;
-                att.setText( aText );
+                att.setText( a_text );
                 
             } else {
                 // not exists same att name, then append
-                JxAttribute att = new JxAttribute(aName, aText);
+                JxAttribute att = new JxAttribute(a_name, a_text);
                 this.addChild(att);
             }
         }
@@ -118,12 +118,12 @@ public class JxNode implements iJxElement{
     
     /**
      * return first child node which matches name.
-     * @param aName
+     * @param a_name
      * @return child node. if not found, return null.
      */
-    public JxNode getFirstNode(String aName){
+    public JxNode getFirstNode(String a_name){
         synchronized( this ){
-            iJxElement element = getFirstElement( aName, eElementType.NODE);
+            iJxElement element = getFirstElement( a_name, eElementType.NODE);
             if( element != null ){
                 // found
                 JxNode child = (JxNode)element;
@@ -137,12 +137,12 @@ public class JxNode implements iJxElement{
 
     /**
      * return first child text which matches name.
-     * @param aName
+     * @param a_name
      * @return text. if not found, return null.
      */
-    public String getFirstNodeText(String aName){
+    public String getFirstNodeText(String a_name){
         synchronized( this ){
-            iJxElement element = getFirstElement( aName, eElementType.NODE);
+            iJxElement element = getFirstElement( a_name, eElementType.NODE);
             if( element != null ){
                 // found
                 JxNode child = (JxNode)element;
@@ -156,22 +156,22 @@ public class JxNode implements iJxElement{
     
     /**
      * return array of child nodes
-     * @param aName node name
+     * @param a_name node name
      * @return array of child nodes. if no matched child, return array of size=0.
      */
-    public JxNode[] getNodes(String aName){
+    public JxNode[] getNodes(String a_name){
         ArrayList<JxNode> resultList = new ArrayList<JxNode>();
         synchronized( this ){
-            if( mChildList == null || aName ==  null){
+            if( m_childList == null || a_name ==  null){
                 return null;
             }
             
-            Iterator<iJxElement> iterator = mChildList.iterator();
+            Iterator<iJxElement> iterator = m_childList.iterator();
             while( iterator.hasNext() ){
                 iJxElement element = iterator.next();
                 if( element.getType() == eElementType.NODE){
                     String name = element.getName();
-                    if( name.equals( aName )){
+                    if( name.equals( a_name )){
                         // found
                         resultList.add((JxNode)element);
                     }
@@ -187,24 +187,24 @@ public class JxNode implements iJxElement{
     
     /**
      * get attribute
-     * @param aText
+     * @param a_text
      * @return text( if not exists, return null )
      */
-    public String getAtt(String aName, String aText){
+    public String getAtt(String a_name, String a_text){
         String result = null;
         
         synchronized( this ){
-            if( mChildList == null ){
+            if( m_childList == null ){
                 return null;
             }
             
-            Iterator<iJxElement> iterator = mChildList.iterator();
+            Iterator<iJxElement> iterator = m_childList.iterator();
             while( iterator.hasNext() ){
                 iJxElement element = iterator.next();
                 if( element.getType() == eElementType.ATTRIBUTE ){
                     JxAttribute att = (JxAttribute)element;
                     String name = att.getName();
-                    if( name.equals( aName )){
+                    if( name.equals( a_name )){
                         // found
                         result = att.getText();
                         break;
@@ -224,10 +224,10 @@ public class JxNode implements iJxElement{
         LinkedHashMap<String, String> resultMap = new LinkedHashMap<String, String>();
         
         synchronized( this ){
-            if( mChildList == null ){
+            if( m_childList == null ){
                 return resultMap;
             }
-            Iterator<iJxElement> iterator = mChildList.iterator();
+            Iterator<iJxElement> iterator = m_childList.iterator();
             while( iterator.hasNext()){
                 iJxElement element = iterator.next();
                 if( element.getType() == eElementType.ATTRIBUTE ){
@@ -244,53 +244,53 @@ public class JxNode implements iJxElement{
     
     /**
      * add child node which name is aName.
-     * @param aName
+     * @param a_name
      * @return created node
      */
-    public JxNode addNode(String aName){
-        JxNode childNode = new JxNode(aName);
+    public JxNode addNode(String a_name){
+        JxNode childNode = new JxNode(a_name);
         addChild( childNode );
         return childNode;
     }
 
     /**
      * add child node which name is aName.
-     * @param aName
+     * @param a_name
      * @return created node
      */
-    public JxNode addNode(String aName, String aText){
-        JxNode childNode = new JxNode(aName, aText);
+    public JxNode addNode(String a_name, String a_text){
+        JxNode childNode = new JxNode(a_name, a_text);
         addChild( childNode );
         return childNode;
     }
 
     /**
      * add child nodek which name is aName.
-     * @param aNode
+     * @param a_node
      */
-    public void addNode(JxNode aNode){
-        addChild( aNode );
+    public void addNode(JxNode a_node){
+        addChild( a_node );
     }
     
     /**
      * add text node
      * @param aName
      */
-    public void addText(String aText){
-        if( mText == null ){
-            mText = aText.intern();
+    public void addText(String a_text){
+        if( m_text == null ){
+            m_text = a_text.intern();
         } else {
-            JxText childText = new JxText(aText);
+            JxText childText = new JxText(a_text);
             addChild( childText );
         }
     }
 
     /**
      * add comment node
-     * @param aText
+     * @param a_text
      */
-    public void addComment(String aText){
-        JxComment childComment = new JxComment(aText);
+    public void addComment(String a_text){
+        JxComment childComment = new JxComment(a_text);
         addChild( childComment );
     }
     
@@ -311,11 +311,11 @@ public class JxNode implements iJxElement{
     /**
      * write XML to stream.
      * This method doesn't close aOut.
-     * @param aOut writer target
+     * @param a_out writer target
      * @throws IOException
      */
-    public void toStream(OutputStream aOut)throws IOException{
-        Writer writer = new OutputStreamWriter( aOut, mEncoding );
+    public void toStream(OutputStream a_out)throws IOException{
+        Writer writer = new OutputStreamWriter( a_out, m_encoding );
         BufferedWriter bw = new BufferedWriter(writer);
         toWriter( bw, 0);
         writer.close();
@@ -323,13 +323,13 @@ public class JxNode implements iJxElement{
 
     /**
      * write XML to file
-     * @param aFile output file
+     * @param a_file output file
      * @throws IOException
      */
-    public void toFile(File aFile)throws IOException{
+    public void toFile(File a_file)throws IOException{
         OutputStream out = null;
         try{
-            out = new FileOutputStream(aFile);
+            out = new FileOutputStream(a_file);
             toStream( out );
         }finally{
             if( out != null ){
@@ -349,53 +349,53 @@ public class JxNode implements iJxElement{
 
     /**
      * helper for writer
-     * @param aWriter output writer
-     * @param aDepth indent level(0,1,2...)
+     * @param a_writer output writer
+     * @param a_depth indent level(0,1,2...)
      * @throws IOException 
      */
     @Override
-    public void toWriter(Writer aWriter, int aDepth) throws IOException {
+    public void toWriter(Writer a_writer, int a_depth) throws IOException {
         // begin indent
-        for( int i=0 ; i<aDepth; i++ ){
-            aWriter.write( "  ");
+        for( int i=0 ; i<a_depth; i++ ){
+            a_writer.write( "  ");
         }
         
         Map<String, String> attMap = getAttMap();
         boolean hasChildNode = false;
-        if( mChildList != null ){
-            if( ( mChildList.size() - attMap.size() ) > 0 ){
+        if( m_childList != null ){
+            if( ( m_childList.size() - attMap.size() ) > 0 ){
                 hasChildNode = true;
             }
         }
-        if( mText == null && !hasChildNode ){
+        if( m_text == null && !hasChildNode ){
             // empty node
-            aWriter.write("<" );
-            aWriter.write(mName);
-            writeAttribute(aWriter, attMap);
-            aWriter.append("/>" );
+            a_writer.write("<" );
+            a_writer.write(m_name);
+            writeAttribute(a_writer, attMap);
+            a_writer.append("/>" );
         } else {
             // start tag
-            aWriter.write("<" );
-            aWriter.write(mName);
-            writeAttribute(aWriter, attMap);
-            aWriter.append(">");
-            if( mText != null ){
-                XmlUtil.toWriter(aWriter, mText);
+            a_writer.write("<" );
+            a_writer.write(m_name);
+            writeAttribute(a_writer, attMap);
+            a_writer.append(">");
+            if( m_text != null ){
+                XmlUtil.toWriter(a_writer, m_text);
             }
 
-            if( mChildList != null && mChildList.size() > 0){
-                Iterator<iJxElement> iterator = mChildList.iterator();
+            if( m_childList != null && m_childList.size() > 0){
+                Iterator<iJxElement> iterator = m_childList.iterator();
                 while( iterator.hasNext() ){
                     iJxElement element = iterator.next();
                     switch( element.getType() ){
                     case NODE:
                     case COMMENT:
-                        aWriter.write("\n");
-                        element.toWriter(aWriter, aDepth+1);
+                        a_writer.write("\n");
+                        element.toWriter(a_writer, a_depth+1);
                         break;
                     case TEXT:
                         JxText text = (JxText)element;
-                        aWriter.write(text.getText());
+                        a_writer.write(text.getText());
                         break;
                     default:
                         break;
@@ -403,18 +403,18 @@ public class JxNode implements iJxElement{
                 }
                     
                 if( hasChildNode ){
-                    aWriter.write("\n");
+                    a_writer.write("\n");
                 }
             }
             // end tag
             if( hasChildNode ){
-                for( int i=0 ; i<aDepth; i++ ){
-                    aWriter.write( "  ");
+                for( int i=0 ; i<a_depth; i++ ){
+                    a_writer.write( "  ");
                 }
             }
-            aWriter.write("</" );
-            aWriter.write(mName);
-            aWriter.write( ">");
+            a_writer.write("</" );
+            a_writer.write(m_name);
+            a_writer.write( ">");
         }
     }
     
@@ -423,35 +423,35 @@ public class JxNode implements iJxElement{
     //-----------------------------
     /**
      * add new child
-     * @param aChild add node
+     * @param a_child add node
      */
-    private void addChild( iJxElement aChild ){
+    private void addChild( iJxElement a_child ){
         synchronized(this){
-            if(mChildList == null ){
-                mChildList = new ArrayList<iJxElement>();
+            if(m_childList == null ){
+                m_childList = new ArrayList<iJxElement>();
             }
-            mChildList.add(aChild);
+            m_childList.add(a_child);
         }
     }
 
     /**
      * return first element of this node which matches name and type.
-     * @param aName element name( if comment or after second text, set "" )
-     * @param aType type of element
+     * @param a_name element name( if comment or after second text, set "" )
+     * @param a_type type of element
      * @return found element( if not match, return null )
      */
-    private iJxElement getFirstElement(String aName, eElementType aType){
+    private iJxElement getFirstElement(String a_name, eElementType a_type){
         synchronized( this ){
-            if( mChildList == null || aName ==  null){
+            if( m_childList == null || a_name ==  null){
                 return null;
             }
             
-            Iterator<iJxElement> iterator = mChildList.iterator();
+            Iterator<iJxElement> iterator = m_childList.iterator();
             while( iterator.hasNext() ){
                 iJxElement element = iterator.next();
-                if( element.getType() == aType){
+                if( element.getType() == a_type){
                     String name = element.getName();
-                    if( name.equals( aName )){
+                    if( name.equals( a_name )){
                         // found
                         return element;
                     }
@@ -465,23 +465,23 @@ public class JxNode implements iJxElement{
 
     /**
      * write attribute to aWriter
-     * @param aWriter
+     * @param a_writer
      * @throws IOException
      */
-    private void writeAttribute(Writer aWriter, Map<String, String> aAttMap) throws IOException{
-        Iterator<Entry<String, String>> iterator = aAttMap.entrySet().iterator();
+    private void writeAttribute(Writer a_writer, Map<String, String> a_attMap) throws IOException{
+        Iterator<Entry<String, String>> iterator = a_attMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Entry<String, String> entry = iterator.next();
             String name = entry.getKey();
             String text = entry.getValue();
 
-            aWriter.write(' ');
-            aWriter.write(name);
-            aWriter.write("=\"");
+            a_writer.write(' ');
+            a_writer.write(name);
+            a_writer.write("=\"");
             if (text != null) {
-                XmlUtil.toWriter(aWriter, text);
+                XmlUtil.toWriter(a_writer, text);
             }
-            aWriter.append('\"');
+            a_writer.append('\"');
         }
     }
 }

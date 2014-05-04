@@ -17,11 +17,11 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
     //------------------------
     // field vairables
     //------------------------
-    private JxNode          mTopNode     = null;
-    private JxNode          mCurrentNode = null;
-    private Stack<JxNode>   mNodeStack   = null;
-    private String          mErrorMsg    = null;
-    private Locator         mLocator     = null;
+    private JxNode          m_topNode     = null;
+    private JxNode          m_currentNode = null;
+    private Stack<JxNode>   m_nodeStack   = null;
+    private String          m_errorMsg    = null;
+    private Locator         m_locator     = null;
     
     //------------------------
     // constructor
@@ -39,18 +39,18 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
      * @return error message. if no error, return null.
      */
     public String getError(){
-        return mErrorMsg;
+        return m_errorMsg;
     }
     public JxNode getTopNode(){
-        return mTopNode;
+        return m_topNode;
     }
     
     //-------------------------------------------
     // methods for Interface of ContentHandler
     //-------------------------------------------
     @Override
-    public void setDocumentLocator(Locator aLocator){
-        mLocator = aLocator;
+    public void setDocumentLocator(Locator a_locator){
+        m_locator = a_locator;
     }
     
     /**
@@ -72,29 +72,29 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
      * found tag
      */
     @Override
-    public void startElement(String aUri, String aLocalName,
-            String aQName,  Attributes aAtts) throws SAXException {
+    public void startElement(String a_uri, String a_localName,
+            String a_QName,  Attributes a_atts) throws SAXException {
         
         // create new node
-        JxNode node = new JxNode( aQName );
-        for( int i=0; i<aAtts.getLength(); i++ ){
-            String name = aAtts.getQName(i);
-            String text = aAtts.getValue(i);
+        JxNode node = new JxNode( a_QName );
+        for( int i=0; i<a_atts.getLength(); i++ ){
+            String name = a_atts.getQName(i);
+            String text = a_atts.getValue(i);
             node.setAtt(name,  text);
         }
 
         // append new node
-        if( mTopNode == null ){
-            mTopNode = node;
-            mCurrentNode = node;
+        if( m_topNode == null ){
+            m_topNode = node;
+            m_currentNode = node;
 
-            mNodeStack = new Stack<JxNode>();
-            mNodeStack.push( node );
+            m_nodeStack = new Stack<JxNode>();
+            m_nodeStack.push( node );
             
         } else {
-            mCurrentNode.addNode(node);
-            mNodeStack.push(mCurrentNode);
-            mCurrentNode = node;
+            m_currentNode.addNode(node);
+            m_nodeStack.push(m_currentNode);
+            m_currentNode = node;
         }
     }
 
@@ -102,17 +102,17 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
      * end tag, then set text
      */
     @Override
-    public void endElement(String aUri, String aLocalName, String aQName)
+    public void endElement(String a_uri, String a_localName, String a_QName)
             throws SAXException {
-        mCurrentNode = mNodeStack.pop();
+        m_currentNode = m_nodeStack.pop();
     }
 
     @Override
-    public void characters(char[] aChars, int aBegin, int aLength)
+    public void characters(char[] a_chars, int a_begin, int a_length)
             throws SAXException {
-        String text = new String(aChars, aBegin, aLength ).trim();
+        String text = new String(a_chars, a_begin, a_length ).trim();
         if( text.length() > 0 ){
-            mCurrentNode.addText( text );
+            m_currentNode.addText( text );
         }
     }
 
@@ -120,15 +120,15 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
     // methods for Interface of ErrorHandler
     //-------------------------------------------
     @Override
-    public void error(SAXParseException aException) throws SAXException {
-        mErrorMsg = createErrorMsg( aException );
+    public void error(SAXParseException a_exception) throws SAXException {
+        m_errorMsg = createErrorMsg( a_exception );
     }
     @Override
-    public void fatalError(SAXParseException aException) throws SAXException {
-        mErrorMsg = createErrorMsg( aException );
+    public void fatalError(SAXParseException a_exception) throws SAXException {
+        m_errorMsg = createErrorMsg( a_exception );
     }
     @Override
-    public void warning(SAXParseException aException) throws SAXException {
+    public void warning(SAXParseException a_exception) throws SAXException {
     }
 
     //-----------------------
@@ -136,24 +136,24 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
     //-----------------------
     /**
      * build error message with Line number and Column number
-     * @param aException 
+     * @param a_exception 
      * @return error message
      */
-    private String createErrorMsg( Exception aException){
+    private String createErrorMsg( Exception a_exception){
         StringBuffer buf = new StringBuffer();
         
-        if( mLocator != null ){
-            int lineNum = mLocator.getLineNumber();
+        if( m_locator != null ){
+            int lineNum = m_locator.getLineNumber();
             if( lineNum >= 0 ){
                 buf.append( "Line=").append( lineNum );
             }
-            int colNum = mLocator.getColumnNumber();
+            int colNum = m_locator.getColumnNumber();
             if( colNum >= 0 ){
                 buf.append( ", Column=").append( colNum ).append(" : "); 
             }
         }
         
-        buf.append( aException.getMessage() );
+        buf.append( a_exception.getMessage() );
         return buf.toString();
     }
 
@@ -161,7 +161,7 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
     // methods for Interface of LexicalHandler
     //-------------------------------------------
     @Override
-    public void comment(char[] aCh, int aStart, int aLength)
+    public void comment(char[] a_char, int a_start, int a_length)
             throws SAXException {
         // TODO Auto-generated method stub
         
@@ -180,7 +180,7 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
     }
 
     @Override
-    public void endEntity(String aName) throws SAXException {
+    public void endEntity(String a_name) throws SAXException {
         // TODO Auto-generated method stub
         
     }
@@ -192,14 +192,14 @@ public class JxReader extends XMLReaderAdapter implements LexicalHandler, ErrorH
     }
 
     @Override
-    public void startDTD(String aName, String aPublicId, String aSystemId)
+    public void startDTD(String a_name, String a_publicId, String a_systemId)
             throws SAXException {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void startEntity(String aName) throws SAXException {
+    public void startEntity(String a_name) throws SAXException {
         // TODO Auto-generated method stub
         
     }

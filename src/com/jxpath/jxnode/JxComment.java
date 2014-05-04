@@ -14,16 +14,16 @@ public class JxComment implements iJxElement {
     // field variables
     //-----------------------
     /** text value */
-    private String mText = null;
+    private String m_text = null;
         
     //-----------------------
     // constactor
     //-----------------------
     /**
-     * @param aText attribute text
+     * @param a_text attribute text
      */
-    protected JxComment(String aText){
-        mText = aText.intern();
+    protected JxComment(String a_text){
+        m_text = a_text.intern();
     }
 
     //-----------------------
@@ -41,7 +41,7 @@ public class JxComment implements iJxElement {
      * @return text value
      */
     protected String getText(){
-        return mText;
+        return m_text;
     }
     
     /**
@@ -55,19 +55,19 @@ public class JxComment implements iJxElement {
 
     /**
      * helper for writer
-     * @param aWriter output writer
-     * @param aDepth indent level(0,1,2...)
+     * @param a_writer output writer
+     * @param a_depth indent level(0,1,2...)
      * @throws IOException 
      */
     @Override
-    public void toWriter(Writer aWriter, int aDepth) throws IOException {
-        for( int i=0; i<aDepth; i++){
-            aWriter.write( "  " );
+    public void toWriter(Writer a_writer, int a_depth) throws IOException {
+        for( int i=0; i<a_depth; i++){
+            a_writer.write( "  " );
         }
-        aWriter.write("<!--");
-        if( mText != null ){
-            XmlUtil.toWriter(aWriter, mText);
+        a_writer.write("<!--");
+        if( m_text != null ){
+            XmlUtil.toWriter(a_writer, m_text);
         }
-        aWriter.append("-->");
+        a_writer.append("-->");
     }
 }
